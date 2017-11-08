@@ -8,13 +8,14 @@ var newChat = require("../models/newchat.js");
 
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res, next) { 
   res.render('index', { title: 'Express' });
 });
 
 router.post("/", function(req, res, next) {
   var ip = req.connection.remoteAddress;
     var event = req.body.event;
+    console.log(event)
     var mainMenu = function() {
       return "";
     }
@@ -24,13 +25,13 @@ router.post("/", function(req, res, next) {
 
     if(event == "user/unfollow") {
     	var userId = req.body.data.id;
-    	db.destroy({where:{userId: userId}}).then(function(err) {
+    	db.User.destroy({where:{userId: userId}}).then(function(err) {
         console.log("db destroyed");
       });
     }
     if(event == "user/follow") {
       var userId = req.body.data.id;
-      db.create({userId: userId, ip: ip}).then(function(user) {
+      db.User.create({userId: userId, ip: ip}).then(function(user) {
         console.log("user follows");
         newChat(userId, ip, function(err, res, body) {
           var chatId = body.data.id;
@@ -49,7 +50,6 @@ router.post("/", function(req, res, next) {
         var subscribed = user.subscribed;
         var state = user.state;
       	if(req.body.data.type != 'text/plain') {
-      		console.log(errMessage);
       		sms(errMessage, chatId, ip);
       		return;
       	}
