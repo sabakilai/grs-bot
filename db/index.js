@@ -6,7 +6,15 @@ var Sequelize = require('sequelize');
 var basename  = path.basename(module.filename);
 var config    = require('./config.js');
 var db        = {};
-var sequelize = new Sequelize(config.database, config.username, config.password, config);
+var sequelize = new Sequelize(
+    config.DATABASE_NAME, 
+    config.DATABASE_USER, 
+    config.DATABASE_PASS, 
+    {
+      host:config.DATABASE_HOST,
+      dialect: 'mysql',
+      logging: true
+    });
 var modelsDir = __dirname + '/models';
 
 fs

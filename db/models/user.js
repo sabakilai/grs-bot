@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
-  var User = sequelize.define('user', {
+  var User = sequelize.define('User', {
 	id: {
 		type: DataTypes.INTEGER,
 		autoIncrement: true,
@@ -17,7 +17,8 @@ module.exports = function(sequelize, DataTypes) {
 			defaultValue:0
 	}
 }, {
-    tableName: 'users'
+	tableName: 'users',
+	timestamps: false
   });
   return User;
 };
