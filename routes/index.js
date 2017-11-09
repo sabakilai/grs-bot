@@ -78,7 +78,7 @@ router.post("/", function(req, res, next) {
             let correctAnswer = ["1","2","3","4"];
             if (correctAnswer.indexOf(content)>= 0) {
               let id = Number(content);
-              db.Document.findById(1).then(document=> {
+              db.Document.findById(id).then(document=> {
                 db.User.update({state:0},{where:{userId:userId}}).then(user=> {
                   sms(document.document, chatId, ip, function(){
                     sms(mainMenu(),chatId,ip)
