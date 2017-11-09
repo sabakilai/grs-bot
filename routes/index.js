@@ -52,7 +52,7 @@ router.post("/", function(req, res, next) {
       		sms(errMessage, chatId, ip);
       		return;
         }
-        if (state == 0){
+        if (state == 0){ 
           let errMessage = "Неверная команда. " + mainMenu();
           if (content == '1') {
             db.Info.findAll().then(data => {
@@ -62,10 +62,31 @@ router.post("/", function(req, res, next) {
                 }, 3000);
               })
             })
-          }
-          else {
+          } else if (content == '2') {
+            let message = 'Выберите категорию регистрации, отправив команду: \n1️⃣Государственная регистрация прав и ограничений на недвижимое имущество'+
+                                                                            '\n2️⃣Государственная регистрация прав на недвижимое имущество на основании договора отчуждения недвижимого имущества, не требующего обязательного нотариального удостоверения'+
+                                                                            '\n3️⃣Предоставление данных о зарегистрированных правах на недвижимое имущество'+
+                                                                            '\n4️⃣Оформление землеустроительных дел и выдача правоудостоверяющих документов на земельный участок (государственный акт о праве частной собственности, бессрочного пользования земельным участком, удостоверение на право временного пользования земельным участком)';
+            db.User.update({state:1},{where: {userId: userId}}).then(user => {
+              sms(message,chatId,ip)
+            })
+          } else {
         		sms(errMessage, chatId, ip);
           }
+        } else if (state == 1) {
+            let errMessage = "Неверная команда. Выбете категорию регистрации."
+            if (['1','2','3','4'].indexOf(content)) {
+              let id = Number(content);
+              db.Info.findById(id).then(document=> {
+                db.User.update({state:0},{where:{userId:userId}}).then(user=> {
+                  sms(document.document, chatId, ip, function(){
+                    sms(mainMenu(),chatId,ip)
+                  })
+                })
+              })
+            } else {
+              sms(errMessage,chatId,ip)
+            }
         } else {
           var errMessage = "Неверная команда.";
           if(content == "Сменить"){
