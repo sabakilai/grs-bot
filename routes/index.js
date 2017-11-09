@@ -16,7 +16,7 @@ router.post("/", function(req, res, next) {
   var ip = req.connection.remoteAddress;
     var event = req.body.event;
     var mainMenu = function() {
-      return "";
+      return "Пришлите мне одну из команд:\n 1️⃣Информация \n 2️⃣Перечень документов \n 3️⃣Прейскурант \n 4️⃣Контакты";
     }
     var allComands = function (subscribed) {
       return "" + (subscribed ? "" : "\n'Сегодня', чтобы получить гороскоп на сегодня")
@@ -34,7 +34,7 @@ router.post("/", function(req, res, next) {
         console.log("user follows");
         newChat(userId, ip, function(err, res, body) {
           var chatId = body.data.id;
-          var message = "Здравствуйте!";
+          var message = "Здравствуйте!" + mainMenu();
           sms(message, chatId, ip);
         })
       });
@@ -56,7 +56,11 @@ router.post("/", function(req, res, next) {
           let errMessage = "Неверная команда.";
           if (content == '1') {
             db.Info.findAll().then(data => {
-              sms(data[0].data_all, chatId, ip)
+              sms(data[0].data_all, chatId, ip, function() {
+                setTimeout(function() {
+                  sms(mainMenu(), chatId, ip);
+                }, 3000);
+              })
             })
           }
           else {
