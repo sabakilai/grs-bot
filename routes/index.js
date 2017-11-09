@@ -15,7 +15,6 @@ router.get('/', function(req, res, next) {
 router.post("/", function(req, res, next) {
   var ip = req.connection.remoteAddress;
     var event = req.body.event;
-    console.log(event)
     var mainMenu = function() {
       return "";
     }
@@ -42,17 +41,17 @@ router.post("/", function(req, res, next) {
     }
     if(event == "message/new") {
       var userId = req.body.data.sender_id;
-      db.find({where: {userId: userId}})
-      .then(function(user) {
-
+      db.User.find({where: {userId: userId}})
+      .then(function(user) {  
       	var content = req.body.data.content;
       	var chatId = req.body.data.chat_id;
         var subscribed = user.subscribed;
         var state = user.state;
+        
       	if(req.body.data.type != 'text/plain') {
       		sms(errMessage, chatId, ip);
       		return;
-      	}
+        }
         if (state == 0){
           let errMessage = "Неверная команда.";
           if (content == '1') {
