@@ -53,7 +53,7 @@ router.post("/", function(req, res, next) {
       		return;
         }
         if (state == 0){
-          let errMessage = "Неверная команда.";
+          let errMessage = "Неверная команда. " + mainMenu();
           if (content == '1') {
             db.Info.findAll().then(data => {
               sms(data[0].data_all, chatId, ip, function() {
