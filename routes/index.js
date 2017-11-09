@@ -16,7 +16,7 @@ router.post("/", function(req, res, next) {
   var ip = req.connection.remoteAddress;
     var event = req.body.event;
     var mainMenu = function() {
-      return "Пришлите мне одну из команд:\n 1️⃣Информация \n 2️⃣Перечень документов \n 3️⃣Прейскурант \n 4️⃣Контакты";
+      return "Пришлите мне одну из команд:\n1️⃣Информация \n2️⃣Перечень документов \n3️⃣Прейскурант \n4️⃣Контакты";
     }
     var allComands = function (subscribed) {
       return "" + (subscribed ? "" : "\n'Сегодня', чтобы получить гороскоп на сегодня")
