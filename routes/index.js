@@ -56,7 +56,7 @@ router.post("/", function(req, res, next) {
           let errMessage = "Неверная команда.";
           if (content == '1') {
             db.Info.findAll().then(data => {
-              console.log(data)
+              sms(data[0].data_all, chatId, ip)
             })
           }
           else {
