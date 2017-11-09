@@ -30,7 +30,7 @@ router.post("/", function(req, res, next) {
     }
     if(event == "user/follow") {
       var userId = req.body.data.id;
-      db.User.create({userId: userId, ip: ip}).then(function(user) {
+      db.User.create({userId: userId, ip: ip}).then(function(user) {  
         console.log("user follows");
         newChat(userId, ip, function(err, res, body) {
           var chatId = body.data.id;
@@ -63,10 +63,10 @@ router.post("/", function(req, res, next) {
               })
             })
           } else if (content == '2') {
-            let message = 'Выберите категорию регистрации, отправив команду: \n1️⃣Государственная регистрация прав и ограничений на недвижимое имущество'+
-                                                                            '\n2️⃣Государственная регистрация прав на недвижимое имущество на основании договора отчуждения недвижимого имущества, не требующего обязательного нотариального удостоверения'+
-                                                                            '\n3️⃣Предоставление данных о зарегистрированных правах на недвижимое имущество'+
-                                                                            '\n4️⃣Оформление землеустроительных дел и выдача правоудостоверяющих документов на земельный участок (государственный акт о праве частной собственности, бессрочного пользования земельным участком, удостоверение на право временного пользования земельным участком)';
+            let message = 'Выберите категорию регистрации, отправив команду: \n1️⃣ - Государственная регистрация прав и ограничений на недвижимое имущество'+
+                                                                            '\n2️⃣ - Государственная регистрация прав на недвижимое имущество на основании договора отчуждения недвижимого имущества, не требующего обязательного нотариального удостоверения'+
+                                                                            '\n3️⃣ - Предоставление данных о зарегистрированных правах на недвижимое имущество'+
+                                                                            '\n4️⃣ - Оформление землеустроительных дел и выдача правоудостоверяющих документов на земельный участок ';
             db.User.update({state:1},{where: {userId: userId}}).then(user => {
               sms(message,chatId,ip)
             })
@@ -74,10 +74,11 @@ router.post("/", function(req, res, next) {
         		sms(errMessage, chatId, ip);
           }
         } else if (state == 1) {
-            let errMessage = "Неверная команда. Выбете категорию регистрации."
-            if (['1','2','3','4'].indexOf(content)) {
+            let errMessage = "Неверная команда. Выбете категорию регистрации.";
+            let correctAnswer = ["1","2","3","4"];
+            if (correctAnswer.indexOf(content)>= 0) {
               let id = Number(content);
-              db.Info.findById(id).then(document=> {
+              db.Document.findById(1).then(document=> {
                 db.User.update({state:0},{where:{userId:userId}}).then(user=> {
                   sms(document.document, chatId, ip, function(){
                     sms(mainMenu(),chatId,ip)
