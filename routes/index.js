@@ -142,7 +142,7 @@ router.post("/", function(req, res, next) {
             } else {
               sms(errMessage,chatId,ip)
             }
-        } else if (state == 1) {
+        } else if (state == 2) {
           let errMessage =  (language==1 ? "Неверная команда. Выберете категорию регистрации." : "Туура эмес команда. Департаментти танданыз.")
           let correctAnswer = ["1","2"];
           if (correctAnswer.indexOf(content)>=0) {
