@@ -80,7 +80,7 @@ router.post("/", function(req, res, next) {
       		return;
         }
         if (state == 0){ 
-          let errMessage = "Неверная команда. " + mainMenu(language);
+          let errMessage =  (language==1 ? "Неверная команда. " : "Туура эмес команда. ") + mainMenu(language);
           if (content == '1') {
             db.Info.findAll({where:{id:language}}).then(data => {
               sms(data[0].data_all, chatId, ip, function() {
@@ -108,7 +108,7 @@ router.post("/", function(req, res, next) {
           } else if (content == '5') {
             if (language == 1) {
               db.User.update({subscribed:2}, {where:{userId:userId}}).then(user => {
-                let message = "Сиз " + mainMenu(2);
+                let message = "Сиз кыргыз тилин тандадыныз. " + mainMenu(2);
                 sms(message,chatId,ip);
               })
             } else {
@@ -121,7 +121,7 @@ router.post("/", function(req, res, next) {
         		sms(errMessage, chatId, ip);
           }
         } else if (state == 1) {
-            let errMessage =  (language==1 ? "Неверная команда. Выберете категорию регистрации." : "")
+            let errMessage =  (language==1 ? "Неверная команда. Выберете категорию регистрации." : "Туура эмес команда. Каттоонун категориясын танданыз.")
             let correctAnswer = ["1","2","3","4"];
             if (correctAnswer.indexOf(content)>= 0) {
               let id;
@@ -143,7 +143,7 @@ router.post("/", function(req, res, next) {
               sms(errMessage,chatId,ip)
             }
         } else if (state == 1) {
-          let errMessage =  (language==1 ? "Неверная команда. Выберете категорию регистрации." : "Жаман команда")
+          let errMessage =  (language==1 ? "Неверная команда. Выберете категорию регистрации." : "Туура эмес команда. Департаментти танданыз.")
           let correctAnswer = ["1","2"];
           if (correctAnswer.indexOf(content)>=0) {
             let id;
