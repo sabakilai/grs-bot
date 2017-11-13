@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
 	},
 	subscribed:{
 		type:DataTypes.INTEGER,
-			defaultValue:0
+			defaultValue:1
 	}
 }, {
 	tableName: 'users',
