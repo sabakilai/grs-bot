@@ -111,14 +111,14 @@ router.post("/", function(req, res, next) {
                 let message = "Сиз кыргыз тилин тандадыныз. " + mainMenu(2);
                 sms(message,chatId,ip);
               })
-            } else if (content == 'Старт') {
-              sms(mainMenu(language),chatId,ip)
             } else {
               db.User.update({subscribed:1}, {where:{userId:userId}}).then(user=> {
                 let message = "Вы выбрали русский язык. " + mainMenu(1);
                 sms(message,chatId,ip);
               })
             }
+          } else if (content == 'Старт') {
+            sms(mainMenu(language),chatId,ip)
           } else {
         		sms(errMessage, chatId, ip);
           }
