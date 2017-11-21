@@ -111,6 +111,8 @@ router.post("/", function(req, res, next) {
                 let message = "Сиз кыргыз тилин тандадыныз. " + mainMenu(2);
                 sms(message,chatId,ip);
               })
+            } else if (content == 'Старт') {
+              sms(mainMenu(language),chatId,ip)
             } else {
               db.User.update({subscribed:1}, {where:{userId:userId}}).then(user=> {
                 let message = "Вы выбрали русский язык. " + mainMenu(1);
@@ -139,6 +141,10 @@ router.post("/", function(req, res, next) {
                   })
                 })
               })
+            } else if (content == 'Старт') {
+              db.User.update({state:0},{where: {userId: userId}}).then(user => {
+                sms(mainMenu(language),chatId,ip)
+              })
             } else {
               sms(errMessage,chatId,ip)
             }
@@ -160,6 +166,10 @@ router.post("/", function(req, res, next) {
                   }, 3000);
                 })
               })
+            })
+          } else if (content == 'Старт') {
+            db.User.update({state:0},{where: {userId: userId}}).then(user => {
+              sms(mainMenu(language),chatId,ip)
             })
           } else {
             sms(errMessage, chatId, ip)
